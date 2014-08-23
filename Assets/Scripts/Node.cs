@@ -8,6 +8,8 @@ public class Node : MonoBehaviour {
     // There should only be one Node with this set to true.
     public bool IsStart = false;
 
+    private bool enabled = false;
+
     public void Start() {
         if (IsStart) {
             player = this;
@@ -17,11 +19,23 @@ public class Node : MonoBehaviour {
     }
 
     public void OnMouseDown() {
+        if (!enabled) {
+            return;
+        }
+
         if (Link.IsLinked(player, this)) {
             player.moveOff();
             player = this;
             this.moveOn();
         }
+    }
+
+    public void enablePlayerInteraction() {
+        enabled = true;
+    }
+
+    public void disablePlayerInteraction() {
+        enabled = false;
     }
 
     private void moveOn() {
