@@ -6,11 +6,8 @@ public class Link : MonoBehaviour {
     private static HashSet<Link> links = new HashSet<Link>();
 
     public static bool IsLinked(Node a, Node b) {
-        GameObject c = a.gameObject;
-        GameObject d = b.gameObject;
-
         foreach (Link link in links) {
-            if ((link.source == c && link.target == d) || (link.source == d && link.target == c)) {
+            if ((link.source == a && link.target == b) || (link.source == b && link.target == a)) {
                 return true;
             }
         }
@@ -22,14 +19,14 @@ public class Link : MonoBehaviour {
     public const float MAGIC_SCALE = 1.9f;
 
     // Note that the order of these is arbitrary.
-    public GameObject source;
-    public GameObject target;
+    public Node source;
+    public Node target;
 
     // Use this for initialization
     void Start() {
         links.Add(this);
     }
-	
+    
     // Update is called once per frame
     void Update() {
         if (source != null && target != null) {
