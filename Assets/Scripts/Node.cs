@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Node : MonoBehaviour {
+
+    private static HashSet<Node> nodes = new HashSet<Node>();
 
     public static Node player = null;
     public static Node enemy = null;
@@ -9,11 +12,15 @@ public class Node : MonoBehaviour {
     public bool IsStart = false;
 
     private bool enabled = false;
+    private Animator animator;
 
     public void Start() {
+        nodes.Add(this);
+        animator = GetComponent<Animator>();
+
         if (IsStart) {
             player = this;
-            this.moveOn();
+            this.movePlayerOn();
             enemy = this;
         }
     }
@@ -24,9 +31,9 @@ public class Node : MonoBehaviour {
         }
 
         if (Link.IsLinked(player, this)) {
-            player.moveOff();
+            player.movePlayerOff();
             player = this;
-            this.moveOn();
+            this.movePlayerOn();
         }
     }
 
@@ -38,11 +45,45 @@ public class Node : MonoBehaviour {
         enabled = false;
     }
 
-    private void moveOn() {
-        GetComponent<Animator>().Play("Occupied");
+    private void movePlayerOn() {
+        animator.Play("Occupied");
     }
 
-    private void moveOff() {
-        GetComponent<Animator>().Play("Idle");
+    private void movePlayerOff() {
+        animator.Play("Idle");
     }
+
+    public void moveEnemyOn() {
+        enemy.moveEnemyOff();
+        enemy = this;
+
+        animator.Play("EnemyOccupied");
+    }
+    
+    public void moveEnemyOff() {
+        if (this != player) { // In case we overwrite the player animation
+            animator.Play("Idle");
+        }
+    }
+
+    #region StaticHelpers
+    public static List<Node> GetConnectedNodes(Node node) {
+        List<Node> connectedNodes = new List<Node>();
+        
+        List<Link> links = Link.GetLinksFromNode(node);
+        for (int i = 0; i < links.Count; i++) {
+            Link link = links[i];
+            
+            if (link.source == node && link.target != node) {
+                connectedNodes.Add(link.source);
+            }
+            
+            if (link.source != node && link.target == node) {
+                connectedNodes.Add(link.target);
+            }
+        }
+        
+        return connectedNodes;
+    }
+    #endregion
 }

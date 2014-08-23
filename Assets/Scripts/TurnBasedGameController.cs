@@ -7,12 +7,13 @@ public class TurnBasedGameController : MonoBehaviour {
 
     private GameTurn[] turns;
     private int currentTurnIndex;
+    private int firstTurnHandicap = 2;
 
     // Use this for initialization
     void Start() {
         turns = new GameTurn[] {
-            new PlayerTurn(),
             new AITurn(),
+            new PlayerTurn(),
         //new FeedbackTurn()
         };
 
@@ -29,14 +30,26 @@ public class TurnBasedGameController : MonoBehaviour {
         if (currentTurn.isComplete()) {
             currentTurn.tearDown();
 
-            currentTurnIndex = (currentTurnIndex + 1) % turns.Length;
-            currentTurn = turns[currentTurnIndex];
-            printDebug();
+            currentTurn = pickNextTurn();
 
             currentTurn.setUp();
         } else {
             currentTurn.update();
         }
+    }
+
+    private GameTurn pickNextTurn() {
+        if (firstTurnHandicap > 1) {
+            currentTurnIndex = 0;
+            firstTurnHandicap--;
+        } else {
+            currentTurnIndex = (currentTurnIndex + 1) % turns.Length;
+        }
+
+        GameTurn currentTurn = turns[currentTurnIndex];
+        printDebug();
+
+        return currentTurn;
     }
 
     private void ensureCurrentTurn() {

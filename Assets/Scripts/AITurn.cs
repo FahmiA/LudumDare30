@@ -26,9 +26,13 @@ namespace GameController {
         
         public void update() {
             List<Link> links = Link.GetLinksFromNode(currentEnemy);
-            
-            int linkToTake = UnityEngine.Random.Range(0, links.Count - 1);
-            Node.enemy = links[linkToTake].target;
+            Link linkToTake = links[UnityEngine.Random.Range(0, links.Count)];
+
+            if (linkToTake.source == currentEnemy) {
+                linkToTake.target.moveEnemyOn();
+            } else {
+                linkToTake.source.moveEnemyOn();
+            }
         }
 
         public void tearDown() {
