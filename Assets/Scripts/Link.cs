@@ -19,7 +19,7 @@ public class Link : MonoBehaviour {
     }
 
     // The magic scale number to stretch a link by.
-    public float magicScale = 8.348744f;
+    public const float MAGIC_SCALE = 1.9f;
 
     // Note that the order of these is arbitrary.
     public GameObject source;
@@ -49,10 +49,10 @@ public class Link : MonoBehaviour {
             source.transform.position;
         float angle = Mathf.Atan2(angleVect.y, angleVect.x) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         // Update length to reach 
         float distance = Vector2.Distance(source.transform.position, target.transform.position);
-        transform.localScale = new Vector2(transform.localScale.x, distance * magicScale);
+        transform.localScale = new Vector2(distance * MAGIC_SCALE, transform.localScale.y);
     }
 }
