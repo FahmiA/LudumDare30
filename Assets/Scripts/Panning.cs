@@ -4,7 +4,7 @@ using System.Collections;
 public class Panning : MonoBehaviour {
 
     public int panThreshold = 20;
-    public int panAmount = 1;
+    public float panAmount = 0.2f;
 
     void Update() {
         Vector2 mousePosition = Input.mousePosition;
