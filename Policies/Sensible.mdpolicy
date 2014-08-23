@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PolicySet name="Sensible">
   <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain">
+    <FileWidth>100</FileWidth>
     <NoTabsAfterNonTabs>True</NoTabsAfterNonTabs>
     <EolMarker>Unix</EolMarker>
   </TextStylePolicy>
@@ -214,5 +215,8 @@
   </NameConventionPolicy>
   <VersionControlPolicy inheritsSet="Mono" />
   <ChangeLogPolicy inheritsSet="Mono" />
-  <TextStylePolicy inheritsSet="null" scope="text/x-csharp" />
+  <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp">
+    <NoTabsAfterNonTabs>True</NoTabsAfterNonTabs>
+    <EolMarker>Unix</EolMarker>
+  </TextStylePolicy>
 </PolicySet>
