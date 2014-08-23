@@ -16,15 +16,18 @@ public class Link : MonoBehaviour {
     }
 
     // The magic scale number to stretch a link by.
-    public const float MAGIC_SCALE = 1.9f;
+    public const float MAGIC_SCALE = 3.5f;
 
     // Note that the order of these is arbitrary.
     public Node source;
     public Node target;
 
+    private Animator animator;
+
     // Use this for initialization
     void Start() {
         links.Add(this);
+        animator = this.GetComponent<Animator>();
     }
     
     // Update is called once per frame
@@ -51,5 +54,13 @@ public class Link : MonoBehaviour {
         // Update length to reach 
         float distance = Vector2.Distance(source.transform.position, target.transform.position);
         transform.localScale = new Vector2(distance * MAGIC_SCALE, transform.localScale.y);
+    }
+
+    public void markAsVisited() {
+        animator.Play("visited");
+    }
+
+    public void markAsIdle() {
+        animator.Play("idle");
     }
 }
