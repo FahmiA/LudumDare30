@@ -11,14 +11,24 @@ public class Node : MonoBehaviour {
     public void Start() {
         if (IsStart) {
             player = this;
+            this.moveOn();
             enemy = this;
         }
     }
 
     public void OnMouseDown() {
         if (Link.IsLinked(player, this)) {
+            player.moveOff();
             player = this;
+            this.moveOn();
         }
     }
 
+    private void moveOn() {
+        GetComponent<Animator>().Play("Occupied");
+    }
+
+    private void moveOff() {
+        GetComponent<Animator>().Play("Idle");
+    }
 }
