@@ -1,15 +1,33 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Link : MonoBehaviour {
 
+    private static HashSet<Link> links = new HashSet<Link>();
+
+    public static bool IsLinked(Node a, Node b) {
+        GameObject c = a.gameObject;
+        GameObject d = b.gameObject;
+
+        foreach (Link link in links) {
+            if ((link.source == c && link.target == d) || (link.source == d && link.target == c)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // The magic scale number to stretch a link by.
+    public float magicScale = 8.348744f;
+
+    // Note that the order of these is arbitrary.
     public GameObject source;
     public GameObject target;
-    public float MAGIC_SCALE = 8.348744f;
 
     // Use this for initialization
     void Start() {
-	
+        links.Add(this);
     }
 	
     // Update is called once per frame
@@ -35,6 +53,6 @@ public class Link : MonoBehaviour {
 
         // Update length to reach 
         float distance = Vector2.Distance(source.transform.position, target.transform.position);
-        transform.localScale = new Vector2(transform.localScale.x, distance * MAGIC_SCALE);
+        transform.localScale = new Vector2(transform.localScale.x, distance * magicScale);
     }
 }

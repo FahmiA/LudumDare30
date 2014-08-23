@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Panning : MonoBehaviour {
 
@@ -9,7 +8,7 @@ public class Panning : MonoBehaviour {
     // The maximum speed that pan should move at, in hundredths of a unit per frame.
     public int maxPanSpeed = 20;
 
-    void Update() {
+    public void Update() {
         Vector2 mousePosition = Input.mousePosition;
 
         float xdiff = 0;
