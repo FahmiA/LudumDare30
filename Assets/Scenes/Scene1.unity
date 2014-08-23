@@ -87,6 +87,7 @@ GameObject:
   - 124: {fileID: 36642979}
   - 81: {fileID: 36642978}
   - 114: {fileID: 36642983}
+  - 114: {fileID: 36642984}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -171,7 +172,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panThreshold: 50
-  maxPanSpeed: 20
+  maxPanSpeed: 50
+--- !u!114 &36642984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 36642977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd5adbda2562c4ee79e55669412693d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinZoomDistance: 3
+  MaxZoomDistance: 20
+  ZoomSpeed: 100
 --- !u!1 &816252974
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,8 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1151d532ee2fce242a6c1d39faa56898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 1125973451}
-  target: {fileID: 1967464794}
+  source: {fileID: 1125973454}
+  target: {fileID: 1967464797}
 --- !u!212 &816252976
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -299,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 007a342f3a3c04395a86e60723d1560b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: 0
+  IsStart: 0
 --- !u!61 &1125973455
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -374,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 007a342f3a3c04395a86e60723d1560b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: 2
+  IsStart: 0
 --- !u!61 &1967464798
 BoxCollider2D:
   m_ObjectHideFlags: 0

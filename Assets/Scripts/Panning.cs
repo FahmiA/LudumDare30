@@ -5,8 +5,9 @@ public class Panning : MonoBehaviour {
     // The distance of the mouse from the screen edge at which the camera should begin panning.
     public int panThreshold = 20;
 
-    // The maximum speed that pan should move at, in hundredths of a unit per frame.
-    public int maxPanSpeed = 20;
+    // The maximum speed that pan should move at, in thousandths of a unit relative to the
+    // orthographic size of the camera per frame.
+    public int maxPanSpeed = 50;
 
     public void Update() {
         Vector2 mousePosition = Input.mousePosition;
@@ -46,7 +47,7 @@ public class Panning : MonoBehaviour {
             xdiff = Mathf.Clamp(xdiff, -panThreshold, panThreshold);
             ydiff = Mathf.Clamp(ydiff, -panThreshold, panThreshold);
 
-            float mult = ((float) maxPanSpeed / 100) / panThreshold;
+            float mult = (camera.orthographicSize * maxPanSpeed / 1000f) / panThreshold;
 
             transform.Translate(new Vector2(xdiff * mult, ydiff * mult));
         }
