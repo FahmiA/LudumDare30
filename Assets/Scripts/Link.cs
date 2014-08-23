@@ -15,6 +15,18 @@ public class Link : MonoBehaviour {
         return false;
     }
 
+    public static List<Link> GetLinksFromNode(Node node) {
+        List<Link> connectedLinks = new List<Link>();
+
+        foreach (Link link in links) {
+            if (link.source == node || link.target == node) {
+                connectedLinks.Add(link);
+            }
+        }
+
+        return connectedLinks;
+    }
+
     // The magic scale number to stretch a link by.
     public const float MAGIC_SCALE = 3.5f;
 
