@@ -13,3 +13,8 @@
 /*.booproj
 
 *.cs.meta
+
+# Temp and backup files
+Thumbs.db
+*.swp
+*~
