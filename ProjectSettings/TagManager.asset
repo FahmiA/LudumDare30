@@ -41,3 +41,15 @@ TagManager:
     userID: 0
     uniqueID: 0
     locked: 0
+  - name: HUD
+    userID: 3
+    uniqueID: 2451094029
+    locked: 0
+  - name: Nodes
+    userID: 1
+    uniqueID: 3432515825
+    locked: 0
+  - name: Links
+    userID: 2
+    uniqueID: 2882682995
+    locked: 0
