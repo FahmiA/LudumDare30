@@ -3,23 +3,10 @@ using System;
 
 public class PlayerTurn : GameTurn {
 
-    private Node[] nodes;
     private Node currentPlayer;
 
-    public PlayerTurn() {
-        GameObject[] nodeObjects = GameObject.FindGameObjectsWithTag("Node");
-        nodes = new Node[nodeObjects.Length];
-
-        for (int i = 0; i < nodeObjects.Length; i++) {
-            nodes[i] = (Node) nodeObjects[i].GetComponent(typeof(Node));
-        }
-    }
-
     public void Setup() {
-        for (int i = 0; i < nodes.Length; i++) {
-            nodes[i].EnablePlayerInteraction();
-        }
-
+        Node.Enable();
         currentPlayer = Node.Player;
     }
 
@@ -28,9 +15,7 @@ public class PlayerTurn : GameTurn {
     }
 
     public void TearDown() {
-        for (int i = 0; i < nodes.Length; i++) {
-            nodes[i].DisablePlayerInteraction();
-        }
+        Node.Disable();
     }
 
     public bool IsComplete() {

@@ -54,14 +54,6 @@ public class Node : MonoBehaviour {
         }
     }
 
-    public void EnablePlayerInteraction() {
-        isEnabled = true;
-    }
-
-    public void DisablePlayerInteraction() {
-        isEnabled = false;
-    }
-
     private void movePlayerOn() {
         animator.Play("Occupied");
     }
