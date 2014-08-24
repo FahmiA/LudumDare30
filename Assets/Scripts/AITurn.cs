@@ -5,6 +5,8 @@ public class AITurn : GameTurn {
 
     private Node currentEnemy;
 
+    private bool panTurn = false;
+
     public void Setup() {
         Node.Disable();
 
@@ -13,13 +15,15 @@ public class AITurn : GameTurn {
 
     public void Update() {
         int distance = 0;
-        Node far1 = null;
-        Node far2 = null;
-        Node far3 = null;
+        Link far1 = null;
+        Link far2 = null;
+        Link far3 = null;
 
-        IEnumerable<Node> nodes = currentEnemy.GetConnectedNodes();
+        IEnumerable<Link> links = Link.GetLinksFor(currentEnemy);
 
-        foreach (Node node in nodes) {
+        foreach (Link link in links) {
+            Node node = link.GetOtherNode(currentEnemy);
+
             if (node == Node.Player ||
                 (currentEnemy != Node.Player && Node.Player.IsLinked(node))) {
                 continue;
@@ -31,12 +35,14 @@ public class AITurn : GameTurn {
                 distance = fromPlayer;
                 far3 = far2;
                 far2 = far1;
-                far1 = node;
+                far1 = link;
             }
         }
 
         if (far1 == null) {
-            foreach (Node node in nodes) {
+            foreach (Link link in links) {
+                Node node = link.GetOtherNode(currentEnemy);
+
                 if (node != Node.Player) {
                     int fromPlayer = node.DistanceTo(Node.Player);
 
@@ -44,7 +50,7 @@ public class AITurn : GameTurn {
                         distance = fromPlayer;
                         far3 = far2;
                         far2 = far1;
-                        far1 = node;
+                        far1 = link;
                     }
                 }
             }
@@ -52,14 +58,25 @@ public class AITurn : GameTurn {
 
         int select = Random.Range(0, 10);
 
-        if (far3 != null && select >= 9) {
-            far3.MoveEnemyOn();
-        } else if (far2 != null && select >= 6) {
-            far2.MoveEnemyOn();
-        } else {
-            far1.MoveEnemyOn();
-        }
+        Link far = far3 != null && select >= 9 ? far3 : far2 != null && select >= 6 ? far2 : far1;
+        Node move = far.GetOtherNode(currentEnemy);
 
+        move.MoveEnemyOn();
+
+        if (Node.Player.transform.parent != move.transform.parent) {
+            if (panTurn) {
+                GameObject.FindGameObjectWithTag("MainCamera")
+                    .GetComponent<PanTo>().MoveTo(move.transform.parent.gameObject,
+                                                  delegate(PanTo.EndPan end) {
+                    // TODO Flash here.
+                    end();
+                });
+            }
+
+            panTurn = !panTurn;
+        } else {
+            panTurn = false;
+        }
     }
 
     public void TearDown() {

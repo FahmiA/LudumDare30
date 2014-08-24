@@ -10,10 +10,13 @@ public class Zooming : MonoBehaviour {
     public int ZoomSpeed = 100;
     
     void Update() {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (!PanTo.IsPanning) {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        camera.orthographicSize = Mathf.Clamp(camera.orthographicSize - scroll * ZoomSpeed / 100,
-                                              MinZoomDistance, MaxZoomDistance);
+            camera.orthographicSize =
+                Mathf.Clamp(camera.orthographicSize - scroll * ZoomSpeed / 100,
+                            MinZoomDistance, MaxZoomDistance);
+        }
     }
 
 }

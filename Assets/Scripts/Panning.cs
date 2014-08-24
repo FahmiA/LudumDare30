@@ -16,7 +16,10 @@ public class Panning : MonoBehaviour {
     }
 
     public void Update() {
-        pann();
+        if (!PanTo.IsPanning) {
+            pann();
+        }
+
         clamp();
         Camera.main.backgroundColor = Color.red;
     }
