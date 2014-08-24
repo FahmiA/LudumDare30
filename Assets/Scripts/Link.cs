@@ -36,6 +36,15 @@ public class Link : MonoBehaviour {
 
     private Animator animator;
 
+    public enum LinkType {
+        White,
+        Red,
+        Green,
+        Blue
+    }
+
+    public LinkType linkType;
+
     // Use this for initialization
     void Start() {
         links.Add(this);
