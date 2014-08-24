@@ -126,6 +126,10 @@ public class Node : MonoBehaviour {
     private void movePlayerOn() {
         animator.Play("Player" + whichNode);
         playSound();
+
+        if (Player == Enemy) {
+            Application.LoadLevel("SceneEnd");
+        }
     }
 
     private void movePlayerOff() {
