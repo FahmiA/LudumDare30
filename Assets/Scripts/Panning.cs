@@ -59,7 +59,7 @@ public class Panning : MonoBehaviour {
             ydiff = Mathf.Clamp(ydiff, -panThreshold, panThreshold);
             
             float mult = (camera.orthographicSize * maxPanSpeed / 1000f) / panThreshold;
-            
+
             transform.Translate(new Vector2(xdiff * mult, ydiff * mult));
         }
     }
