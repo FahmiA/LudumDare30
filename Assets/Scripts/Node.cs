@@ -43,6 +43,9 @@ public class Node : MonoBehaviour {
     // The choice of node.
     private int whichNode;
 
+    /* For debugging (aka. cheating), show the enemy position. */
+    private bool forceShowEnemy = false;
+
     public void Start() {
         bigger = Random.Range(0, 10) > 5;
         resize = Random.Range(10, 100);
@@ -74,6 +77,9 @@ public class Node : MonoBehaviour {
 
         transform.localScale = new Vector2(transform.localScale.x + diff,
                                            transform.localScale.y + diff);
+
+
+        showOrHideEnemy();
     }
 
     public void OnMouseDown() {
@@ -88,6 +94,28 @@ public class Node : MonoBehaviour {
         }
     }
 
+    private void showOrHideEnemy() {
+        if (this != Enemy) {
+            return;
+        }
+
+        // Only show the enemy if the player is on a connected node ...
+        bool isNextToPlayer = false;
+        foreach (Node node in GetConnectedNodes()) {
+            if (node == Player) {
+                isNextToPlayer = true;
+                break;
+            }
+        }
+  
+        // ... or when the cheat, ahem "debug", key is pressed.
+        if (isNextToPlayer || Input.GetKey(KeyCode.BackQuote)) {
+            animator.Play("Enemy" + whichNode);
+        } else {
+            animator.Play("Idle" + whichNode);
+        }
+    }
+
     private void movePlayerOn() {
         animator.Play("Player" + whichNode);
     }
@@ -99,8 +127,6 @@ public class Node : MonoBehaviour {
     public void MoveEnemyOn() {
         enemy.MoveEnemyOff();
         enemy = this;
-
-        animator.Play("Enemy" + whichNode);
     }
     
     public void MoveEnemyOff() {
