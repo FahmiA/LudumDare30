@@ -30,9 +30,25 @@ public class Node : MonoBehaviour {
 
     // There should only be one Node with this set to true.
     public bool IsStart = false;
+
+    // The local animator.
     private Animator animator;
 
+    // The current direction of the resize.
+    private bool bigger;
+
+    // The counter to change in size.
+    private int resize;
+
+    // The choice of node.
+    private int whichNode;
+
     public void Start() {
+        bigger = Random.Range(0, 10) > 5;
+        resize = Random.Range(10, 100);
+
+        whichNode = Random.Range(1, 3);
+
         animator = GetComponent<Animator>();
 
         if (IsStart) {
@@ -40,6 +56,24 @@ public class Node : MonoBehaviour {
             this.movePlayerOn();
             enemy = this;
         }
+
+        MoveEnemyOff();
+    }
+
+    public void Update() {
+        resize -= 1;
+
+        float scale = transform.localScale.x;
+
+        if (resize < 0 || scale > 0.6f || scale < 0.4f) {
+            bigger = !bigger;
+            resize = Random.Range(10, 100);
+        }
+
+        float diff = (bigger ? 1 : -1) * 0.001f;
+
+        transform.localScale = new Vector2(transform.localScale.x + diff,
+                                           transform.localScale.y + diff);
     }
 
     public void OnMouseDown() {
@@ -55,23 +89,23 @@ public class Node : MonoBehaviour {
     }
 
     private void movePlayerOn() {
-        animator.Play("Occupied");
+        animator.Play("Player" + whichNode);
     }
 
     private void movePlayerOff() {
-        animator.Play("Idle");
+        animator.Play("Idle" + whichNode);
     }
 
     public void MoveEnemyOn() {
         enemy.MoveEnemyOff();
         enemy = this;
 
-        animator.Play("EnemyOccupied");
+        animator.Play("Enemy" + whichNode);
     }
     
     public void MoveEnemyOff() {
         if (this != player) { // In case we overwrite the player animation
-            animator.Play("Idle");
+            animator.Play("Idle" + whichNode);
         }
     }
 
