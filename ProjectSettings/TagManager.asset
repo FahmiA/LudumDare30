@@ -43,9 +43,9 @@ TagManager:
     userID: 0
     uniqueID: 0
     locked: 0
-  - name: HUD
-    userID: 3
-    uniqueID: 2451094029
+  - name: Background
+    userID: 4
+    uniqueID: 2172338147
     locked: 0
   - name: Links
     userID: 2
@@ -54,4 +54,8 @@ TagManager:
   - name: Nodes
     userID: 1
     uniqueID: 3432515825
+    locked: 0
+  - name: HUD
+    userID: 3
+    uniqueID: 2451094029
     locked: 0
