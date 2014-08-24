@@ -3,32 +3,48 @@ using System.Collections.Generic;
 
 public class AITurn : GameTurn {
 
-    private Node currentEnemy;
+    public Node currentNode;
     private bool panTurn = false;
+
+    private int turnsLeft;
+    private bool isWaiting = false;
+    private bool handicap = true;
+
+    private TurnBasedGameController director;
+
+    public AITurn(TurnBasedGameController director, Node startNode) {
+        this.director = director;
+        currentNode = startNode;
+    }
 
     public void Setup() {
         Node.Disable();
-
-        currentEnemy = Node.Enemy;
+        turnsLeft = handicap ? 4 : 2;
     }
 
     public void Update() {
+        if (isWaiting) {
+            return;
+        }
+
         int distance = 0;
         Link far1 = null;
         Link far2 = null;
         Link far3 = null;
 
-        IEnumerable<Link> links = Link.GetLinksFor(currentEnemy);
+        IEnumerable<Link> links = Link.GetLinksFor(currentNode);
+
+        Node playerNode = director.Player;
 
         foreach (Link link in links) {
-            Node node = link.GetOtherNode(currentEnemy);
+            Node node = link.GetOtherNode(currentNode);
 
-            if (node == Node.Player ||
-                (currentEnemy != Node.Player && Node.Player.IsLinked(node))) {
+            if (node == playerNode ||
+                (currentNode != playerNode && playerNode.IsLinked(node))) {
                 continue;
             }
 
-            int fromPlayer = node.DistanceTo(Node.Player);
+            int fromPlayer = node.DistanceTo(playerNode);
 
             if (fromPlayer > distance) {
                 distance = fromPlayer;
@@ -40,10 +56,10 @@ public class AITurn : GameTurn {
 
         if (far1 == null) {
             foreach (Link link in links) {
-                Node node = link.GetOtherNode(currentEnemy);
+                Node node = link.GetOtherNode(currentNode);
 
-                if (node != Node.Player) {
-                    int fromPlayer = node.DistanceTo(Node.Player);
+                if (node != playerNode) {
+                    int fromPlayer = node.DistanceTo(playerNode);
 
                     if (fromPlayer > distance) {
                         distance = fromPlayer;
@@ -55,44 +71,54 @@ public class AITurn : GameTurn {
             }
         }
 
-        int select = Random.Range(0, 10);
+        int select = handicap ? 0 : Random.Range(0, 10);
 
         Link far = far3 != null && select >= 9 ? far3 : far2 != null && select >= 6 ? far2 : far1;
-        Node move = far.GetOtherNode(currentEnemy);
+        Node move = far.GetOtherNode(currentNode);
 
-        move.MoveEnemyOn();
+        currentNode.MoveEnemyOff();
+        currentNode = move;
 
         CameraTint tint = GameObject.FindGameObjectWithTag("CameraTint").GetComponent<CameraTint>();
         bool tinted = false;
 
-        if (Node.Player.transform.parent != move.transform.parent) {
-            if (panTurn) {
-                GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PanTo>()
-                    .MoveTo(move.transform.parent.gameObject, delegate(PanTo.PanEnd end) {
-                    tint.Show(far, delegate () {
-                        end();
+        if (!handicap && turnsLeft == 2) {
+            if (playerNode.transform.parent != move.transform.parent) {
+                if (panTurn) {
+                    GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PanTo>()
+                        .MoveTo(move.transform.parent.gameObject, delegate(PanTo.EndPan end) {
+                        tint.Show(far, delegate () {
+                            end(delegate () {
+                                turnsLeft -= 1;
+                                isWaiting = false;
+                            });
+                        });
                     });
-                });
-                tinted = true;
-            }
+                    tinted = true;
+                }
 
-            panTurn = !panTurn;
-        } else {
-            panTurn = false;
+                panTurn = !panTurn;
+            } else {
+                panTurn = false;
+            }
         }
 
         if (!tinted) {
-            tint.Show(far);
+            tint.Show(far, delegate() {
+                turnsLeft -= 1;
+                isWaiting = false;
+            });
         }
+
+        isWaiting = true;
     }
 
     public void TearDown() {
-
+        handicap = false;
     }
 
     public bool IsComplete() {
-        // Enemy node has changed
-        return currentEnemy != Node.Enemy;
+        return turnsLeft == 0;
     }
 
 }

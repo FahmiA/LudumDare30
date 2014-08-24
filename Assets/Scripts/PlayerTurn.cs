@@ -3,11 +3,18 @@ using System;
 
 public class PlayerTurn : GameTurn {
 
-    private Node currentPlayer;
+    public Node currentNode;
+
+    private int turnsLeft;
+
+    public PlayerTurn(Node startNode) {
+        currentNode = startNode;
+        currentNode.MovePlayerOn();
+    }
 
     public void Setup() {
         Node.Enable();
-        currentPlayer = Node.Player;
+        turnsLeft = 3;
     }
 
     public void Update() {
@@ -19,8 +26,14 @@ public class PlayerTurn : GameTurn {
     }
 
     public bool IsComplete() {
-        // Player node has changed
-        return currentPlayer != Node.Player;
+        return turnsLeft == 0;
+    }
+
+    public void MovePlayer(Node to) {
+        currentNode.MovePlayerOff();
+        currentNode = to;
+        currentNode.MovePlayerOn();
+        turnsLeft -= 1;
     }
 
 }

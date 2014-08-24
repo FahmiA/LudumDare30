@@ -2,8 +2,9 @@
 
 public class PanTo : MonoBehaviour {
 
-    public delegate void PanEnd();
-    public delegate void OnPan(PanEnd end);
+    public delegate void OnPanEnd();
+    public delegate void EndPan(OnPanEnd end);
+    public delegate void OnPan(EndPan end);
 
     public static bool IsPanning = false;
 
@@ -15,6 +16,7 @@ public class PanTo : MonoBehaviour {
     private bool isPanningBack = false;
     private OnPan onPan;
     private bool isWaiting = false;
+    private OnPanEnd onEnd;
 
     public void Update() {
         if (IsPanning && !isWaiting) {
@@ -32,11 +34,13 @@ public class PanTo : MonoBehaviour {
 
                     isWaiting = true;
 
-                    onPan(delegate () {
+                    onPan(delegate (OnPanEnd end) {
                         isWaiting = false;
+                        onEnd = end;
                     });
                 } else {
                     IsPanning = false;
+                    onEnd();
                 }
             } else {
                 Vector2 diff = Vector2.Lerp(panningFrom, panningTo, lerp);

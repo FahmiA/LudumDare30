@@ -3,21 +3,6 @@ using System.Collections.Generic;
 
 public class Node : MonoBehaviour {
 
-    private static Node player = null;
-    private static Node enemy = null;
-
-    public static Node Player {
-        get {
-            return player;
-        }
-    }
-
-    public static Node Enemy {
-        get {
-            return enemy;
-        }
-    }
-
     private static bool isEnabled = false;
 
     public static void Enable() {
@@ -27,9 +12,6 @@ public class Node : MonoBehaviour {
     public static void Disable() {
         isEnabled = false;
     }
-
-    // There should only be one Node with this set to true.
-    public bool IsStart = false;
 
     public AudioClip[] sounds;
 
@@ -45,9 +27,6 @@ public class Node : MonoBehaviour {
     // The choice of node.
     private int whichNode;
 
-    /* For debugging (aka. cheating), show the enemy position. */
-    private bool forceShowEnemy = false;
-
     public void Start() {
         bigger = Random.Range(0, 10) > 5;
         resize = Random.Range(10, 100);
@@ -55,14 +34,7 @@ public class Node : MonoBehaviour {
         whichNode = Random.Range(1, 3);
 
         animator = GetComponent<Animator>();
-
-        if (IsStart) {
-            player = this;
-            this.movePlayerOn();
-            enemy = this;
-        }
-
-        MoveEnemyOff();
+        animator.Play("Idle" + whichNode);
     }
 
     public void Update() {
@@ -89,22 +61,27 @@ public class Node : MonoBehaviour {
             return;
         }
 
+        TurnBasedGameController director =
+            GameObject.FindGameObjectWithTag("Director").GetComponent<TurnBasedGameController>();
+        Node player = director.Player;
+
         if (IsLinked(player)) {
-            player.movePlayerOff();
-            player = this;
-            this.movePlayerOn();
+            director.MovePlayer(this);
         }
     }
 
     private void showOrHideEnemy() {
-        if (this != Enemy) {
+        TurnBasedGameController director =
+            GameObject.FindGameObjectWithTag("Director").GetComponent<TurnBasedGameController>();
+
+        if (this != director.Enemy) {
             return;
         }
 
         // Only show the enemy if the player is on a connected node ...
         bool isNextToPlayer = false;
         foreach (Node node in GetConnectedNodes()) {
-            if (node == Player) {
+            if (node == director.Player) {
                 isNextToPlayer = true;
                 break;
             }
@@ -123,32 +100,20 @@ public class Node : MonoBehaviour {
         audio.PlayOneShot(sound);
     }
 
-    private void movePlayerOn() {
+    public void MovePlayerOn() {
         animator.Play("Player" + whichNode);
         playSound();
-
-        if (Player == Enemy) {
-            Application.LoadLevel("SceneEnd");
-        }
     }
 
-    private void movePlayerOff() {
+    public void MovePlayerOff() {
         animator.Play("Idle" + whichNode);
-    }
-
-    public void MoveEnemyOn() {
-        enemy.MoveEnemyOff();
-        enemy = this;
     }
     
     public void MoveEnemyOff() {
-        if (this != player) { // In case we overwrite the player animation
-            animator.Play("Idle" + whichNode);
-        }
+        animator.Play("Idle" + whichNode);
     }
 
     public int DistanceTo(Node other) {
-        // TODO Calculate distance as number of edges that must be travesed, not actual distance.
         return (int) Mathf.Round(Vector2.Distance(this.transform.position,
                                                   other.transform.position));
     }

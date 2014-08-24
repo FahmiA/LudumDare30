@@ -3,34 +3,63 @@ using System.Collections.Generic;
 
 public class TurnBasedGameController : MonoBehaviour {
 
-    private GameTurn[] turns;
-    private int currentTurnIndex;
+    private PlayerTurn playerTurn;
+    private AITurn aiTurn;
 
-    // The number of turns that the enemy gets at the start.
-    public int firstTurnHandicap = 2;
+    private GameTurn currentTurn;
 
-    // Use this for initialization
-    void Start() {
-        turns = new GameTurn[] {
-            new AITurn(),
-            new PlayerTurn(),
-        // new FeedbackTurn()
-        };
+    public float startDelay;
+    private float start;
+    private bool started = false;
 
-        currentTurnIndex = -1;
+    public Node Player {
+        get {
+            if (!started) {
+                return playerStartNode;
+            }
+
+            return playerTurn.currentNode;
+        }
     }
-    
-    // Update is called once per frame
-    void Update() {
-        // Everything is given one turn
-        ensureCurrentTurn();
 
-        GameTurn currentTurn = turns[currentTurnIndex];
+    public Node Enemy {
+        get {
+            if (!started) {
+                return enemyStartNode;
+            }
+
+            return aiTurn.currentNode;
+        }
+    }
+
+    public Node playerStartNode;
+    public Node enemyStartNode;
+
+    private bool first = true;
+
+    public void Start() {
+        start = Time.time;
+    }
+
+    public void LateUpdate() {
+        if (first) {
+            playerTurn = new PlayerTurn(playerStartNode);
+            aiTurn = new AITurn(this, enemyStartNode);
+            currentTurn = aiTurn;
+            currentTurn.Setup();
+            first = false;
+        }
+
+        if (!started && Time.time < start + startDelay) {
+            return;
+        }
+
+        started = true;
 
         if (currentTurn.IsComplete()) {
             currentTurn.TearDown();
 
-            currentTurn = pickNextTurn();
+            pickNextTurn();
 
             currentTurn.Setup();
         } else {
@@ -38,25 +67,16 @@ public class TurnBasedGameController : MonoBehaviour {
         }
     }
 
-    private GameTurn pickNextTurn() {
-        if (firstTurnHandicap > 1) {
-            currentTurnIndex = 0;
-            firstTurnHandicap -= 1;
+    public void MovePlayer(Node to) {
+        if (to == Enemy) {
+            Application.LoadLevel("SceneEnd");
         } else {
-            currentTurnIndex = (currentTurnIndex + 1) % turns.Length;
+            playerTurn.MovePlayer(to);
         }
-
-        GameTurn currentTurn = turns[currentTurnIndex];
-
-        return currentTurn;
     }
 
-    private void ensureCurrentTurn() {
-        if (currentTurnIndex < 0) {
-            currentTurnIndex = 0;
-
-            turns[currentTurnIndex].Setup();
-        }
+    private void pickNextTurn() {
+        currentTurn = currentTurn == playerTurn ? (GameTurn) aiTurn : playerTurn;
     }
 
 }
