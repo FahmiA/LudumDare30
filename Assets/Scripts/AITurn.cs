@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class AITurn : GameTurn {
 
     private Node currentEnemy;
-
     private bool panTurn = false;
 
     public void Setup() {
@@ -63,19 +62,27 @@ public class AITurn : GameTurn {
 
         move.MoveEnemyOn();
 
+        CameraTint tint = GameObject.FindGameObjectWithTag("CameraTint").GetComponent<CameraTint>();
+        bool tinted = false;
+
         if (Node.Player.transform.parent != move.transform.parent) {
             if (panTurn) {
-                GameObject.FindGameObjectWithTag("MainCamera")
-                    .GetComponent<PanTo>().MoveTo(move.transform.parent.gameObject,
-                                                  delegate(PanTo.EndPan end) {
-                    // TODO Flash here.
-                    end();
+                GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PanTo>()
+                    .MoveTo(move.transform.parent.gameObject, delegate(PanTo.PanEnd end) {
+                    tint.Show(far, delegate () {
+                        end();
+                    });
                 });
+                tinted = true;
             }
 
             panTurn = !panTurn;
         } else {
             panTurn = false;
+        }
+
+        if (!tinted) {
+            tint.Show(far);
         }
     }
 
@@ -89,4 +96,3 @@ public class AITurn : GameTurn {
     }
 
 }
-

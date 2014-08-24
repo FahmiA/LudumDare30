@@ -2,8 +2,8 @@
 
 public class PanTo : MonoBehaviour {
 
-    public delegate void EndPan();
-    public delegate void OnPan(EndPan end);
+    public delegate void PanEnd();
+    public delegate void OnPan(PanEnd end);
 
     public static bool IsPanning = false;
 
@@ -23,17 +23,16 @@ public class PanTo : MonoBehaviour {
 
                 if (!isPanningBack) {
                     isPanningBack = true;
+                    
+                    panningTo = panningFrom;
+                    panningFrom = transform.position;
 
-                    Vector2 pan = panningFrom;
-                    panningFrom = panningTo;
-                    panningTo = pan;
-
-                    float size = sizeFrom;
-                    sizeFrom = sizeTo;
-                    sizeTo = size;
+                    sizeTo = sizeFrom;
+                    sizeFrom = camera.orthographicSize;
 
                     isWaiting = true;
-                    onPan(delegate() {
+
+                    onPan(delegate () {
                         isWaiting = false;
                     });
                 } else {

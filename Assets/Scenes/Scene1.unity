@@ -376,6 +376,7 @@ GameObject:
   - 114: {fileID: 36642984}
   - 114: {fileID: 36642985}
   - 82: {fileID: 36642986}
+  - 114: {fileID: 36642987}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -488,17 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49074812e9df24fbbb0ebd8d150a3db5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &36642986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 36642977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e22da3a7718475f9b0ee28c847437a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &36642986
 AudioSource:
   m_ObjectHideFlags: 0
@@ -507,7 +497,7 @@ AudioSource:
   m_GameObject: {fileID: 36642977}
   m_Enabled: 1
   serializedVersion: 3
-  m_audioClip: {fileID: 8300000, guid: 5a3edd232bc97cf459eb9fc15b5f12dd, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f2b6c53947786ea4f85622b892ad9a24, type: 3}
   m_PlayOnAwake: 1
   m_Volume: .449999988
   m_Pitch: 1
@@ -557,6 +547,17 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+--- !u!114 &36642987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 36642977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e22da3a7718475f9b0ee28c847437a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &43593894
 GameObject:
   m_ObjectHideFlags: 0
@@ -9419,7 +9420,7 @@ GameObject:
   - 95: {fileID: 1300692586}
   m_Layer: 0
   m_Name: CameraTint
-  m_TagString: Untagged
+  m_TagString: CameraTint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9481,7 +9482,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1300692583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f59a1ca2b87592438cba29dae009ca4, type: 3}
+  m_Script: {fileID: 11500000, guid: f7d78ee50ab1b41ae9d87174031b2fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1356274272
