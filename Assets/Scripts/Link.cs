@@ -3,28 +3,13 @@ using System.Collections.Generic;
 
 public class Link : MonoBehaviour {
 
-    private static HashSet<Link> links = new HashSet<Link>();
-
-    public static bool IsLinked(Node a, Node b) {
-        foreach (Link link in links) {
-            if ((link.source == a && link.target == b) || (link.source == b && link.target == a)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static List<Link> GetLinksFromNode(Node node) {
-        List<Link> connectedLinks = new List<Link>();
-
-        foreach (Link link in links) {
+    public static IEnumerable<Link> GetLinksFor(Node node) {
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Link")) {
+            Link link = go.GetComponent<Link>();
             if (link.source == node || link.target == node) {
-                connectedLinks.Add(link);
+                yield return link;
             }
         }
-
-        return connectedLinks;
     }
 
     // The magic scale number to stretch a link by.
@@ -33,7 +18,6 @@ public class Link : MonoBehaviour {
     // Note that the order of these is arbitrary.
     public Node source;
     public Node target;
-
     private Animator animator;
 
     public enum LinkType {
@@ -47,7 +31,6 @@ public class Link : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        links.Add(this);
         animator = this.GetComponent<Animator>();
     }
     
@@ -58,6 +41,23 @@ public class Link : MonoBehaviour {
         } else {
             Debug.Log("Link requires a source and a target game object.");
         }
+    }
+
+    public void MarkAsVisited() {
+        animator.Play("visited");
+    }
+
+    public void MarkAsIdle() {
+        animator.Play("idle");
+    }
+
+    // Assumes that this link is attached to the given node.
+    public Node GetOtherNode(Node node) {
+        if (source == node) {
+            return target;
+        }
+
+        return source;
     }
 
     private void orient() {
@@ -77,11 +77,4 @@ public class Link : MonoBehaviour {
         transform.localScale = new Vector2(distance * MAGIC_SCALE, transform.localScale.y);
     }
 
-    public void markAsVisited() {
-        animator.Play("visited");
-    }
-
-    public void markAsIdle() {
-        animator.Play("idle");
-    }
 }

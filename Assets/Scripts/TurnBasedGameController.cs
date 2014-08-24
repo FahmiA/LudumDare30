@@ -1,20 +1,20 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
-
-using GameController;
 
 public class TurnBasedGameController : MonoBehaviour {
 
     private GameTurn[] turns;
     private int currentTurnIndex;
-    private int firstTurnHandicap = 2;
+
+    // The number of turns that the enemy gets at the start.
+    public int firstTurnHandicap = 2;
 
     // Use this for initialization
     void Start() {
         turns = new GameTurn[] {
             new AITurn(),
             new PlayerTurn(),
-        //new FeedbackTurn()
+        // new FeedbackTurn()
         };
 
         currentTurnIndex = -1;
@@ -27,27 +27,26 @@ public class TurnBasedGameController : MonoBehaviour {
 
         GameTurn currentTurn = turns[currentTurnIndex];
 
-        if (currentTurn.isComplete()) {
-            currentTurn.tearDown();
+        if (currentTurn.IsComplete()) {
+            currentTurn.TearDown();
 
             currentTurn = pickNextTurn();
 
-            currentTurn.setUp();
+            currentTurn.Setup();
         } else {
-            currentTurn.update();
+            currentTurn.Update();
         }
     }
 
     private GameTurn pickNextTurn() {
         if (firstTurnHandicap > 1) {
             currentTurnIndex = 0;
-            firstTurnHandicap--;
+            firstTurnHandicap -= 1;
         } else {
             currentTurnIndex = (currentTurnIndex + 1) % turns.Length;
         }
 
         GameTurn currentTurn = turns[currentTurnIndex];
-        printDebug();
 
         return currentTurn;
     }
@@ -55,13 +54,9 @@ public class TurnBasedGameController : MonoBehaviour {
     private void ensureCurrentTurn() {
         if (currentTurnIndex < 0) {
             currentTurnIndex = 0;
-            printDebug();
 
-            turns[currentTurnIndex].setUp();
+            turns[currentTurnIndex].Setup();
         }
     }
 
-    private void printDebug() {
-        Debug.Log("New Turn: " + turns[currentTurnIndex].ToString() + " (" + currentTurnIndex + ").");
-    }
 }

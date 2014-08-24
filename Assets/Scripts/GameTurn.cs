@@ -1,15 +1,13 @@
 using System;
 
-namespace GameController {
-    public interface GameTurn {
+public interface GameTurn {
 
-        void setUp();
+    void Setup();
 
-        void update();
+    void Update();
 
-        void tearDown();
+    void TearDown();
 
-        bool isComplete();
-    }
+    bool IsComplete();
+
 }
-

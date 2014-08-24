@@ -3,19 +3,36 @@ using System.Collections.Generic;
 
 public class Node : MonoBehaviour {
 
-    private static HashSet<Node> nodes = new HashSet<Node>();
+    private static Node player = null;
+    private static Node enemy = null;
 
-    public static Node player = null;
-    public static Node enemy = null;
+    public static Node Player {
+        get {
+            return player;
+        }
+    }
+
+    public static Node Enemy {
+        get {
+            return enemy;
+        }
+    }
+
+    private static bool isEnabled = false;
+
+    public static void Enable() {
+        isEnabled = true;
+    }
+
+    public static void Disable() {
+        isEnabled = false;
+    }
 
     // There should only be one Node with this set to true.
     public bool IsStart = false;
-
-    private bool enabled = false;
     private Animator animator;
 
     public void Start() {
-        nodes.Add(this);
         animator = GetComponent<Animator>();
 
         if (IsStart) {
@@ -26,23 +43,23 @@ public class Node : MonoBehaviour {
     }
 
     public void OnMouseDown() {
-        if (!enabled) {
+        if (!isEnabled) {
             return;
         }
 
-        if (Link.IsLinked(player, this)) {
+        if (isLinked(player)) {
             player.movePlayerOff();
             player = this;
             this.movePlayerOn();
         }
     }
 
-    public void enablePlayerInteraction() {
-        enabled = true;
+    public void EnablePlayerInteraction() {
+        isEnabled = true;
     }
 
-    public void disablePlayerInteraction() {
-        enabled = false;
+    public void DisablePlayerInteraction() {
+        isEnabled = false;
     }
 
     private void movePlayerOn() {
@@ -53,42 +70,39 @@ public class Node : MonoBehaviour {
         animator.Play("Idle");
     }
 
-    public void moveEnemyOn() {
-        enemy.moveEnemyOff();
+    public void MoveEnemyOn() {
+        enemy.MoveEnemyOff();
         enemy = this;
 
         animator.Play("EnemyOccupied");
     }
     
-    public void moveEnemyOff() {
+    public void MoveEnemyOff() {
         if (this != player) { // In case we overwrite the player animation
             animator.Play("Idle");
         }
     }
 
-    public int distanceTo(Node other) {
-        // TODO: Calculate distance between number of edges that must be travesed, not actual distance
-        return (int) Mathf.Round(Vector2.Distance(this.transform.position, other.transform.position));
+    public int DistanceTo(Node other) {
+        // TODO Calculate distance as number of edges that must be travesed, not actual distance.
+        return (int) Mathf.Round(Vector2.Distance(this.transform.position,
+                                                  other.transform.position));
     }
 
-    #region StaticHelpers
-    public static List<Node> GetConnectedNodes(Node node) {
-        List<Node> connectedNodes = new List<Node>();
-        
-        List<Link> links = Link.GetLinksFromNode(node);
-        for (int i = 0; i < links.Count; i++) {
-            Link link = links[i];
-            
-            if (link.source == node && link.target != node) {
-                connectedNodes.Add(link.target);
-            }
-            
-            if (link.source != node && link.target == node) {
-                connectedNodes.Add(link.source);
+    public IEnumerable<Node> GetConnectedNodes() {
+        foreach (Link link in Link.GetLinksFor(this)) {
+            yield return link.GetOtherNode(this);
+        }
+    }
+
+    private bool isLinked(Node node) {
+        foreach (Link link in Link.GetLinksFor(this)) {
+            if (link.GetOtherNode(this) == node) {
+                return true;
             }
         }
-        
-        return connectedNodes;
+
+        return false;
     }
-    #endregion
+
 }
