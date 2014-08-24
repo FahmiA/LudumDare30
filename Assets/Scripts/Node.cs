@@ -81,7 +81,7 @@ public class Node : MonoBehaviour {
             return;
         }
 
-        if (isLinked(player)) {
+        if (IsLinked(player)) {
             player.movePlayerOff();
             player = this;
             this.movePlayerOn();
@@ -121,7 +121,7 @@ public class Node : MonoBehaviour {
         }
     }
 
-    private bool isLinked(Node node) {
+    public bool IsLinked(Node node) {
         foreach (Link link in Link.GetLinksFor(this)) {
             if (link.GetOtherNode(this) == node) {
                 return true;
