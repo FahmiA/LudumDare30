@@ -18,6 +18,7 @@ public class Panning : MonoBehaviour {
     public void Update() {
         pann();
         clamp();
+        Camera.main.backgroundColor = Color.red;
     }
 
     private void pann() {
