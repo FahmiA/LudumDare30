@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinZoomDistance: 3
-  MaxZoomDistance: 20
+  MaxZoomDistance: 11
   ZoomSpeed: 100
 --- !u!1 &43593894
 GameObject:
