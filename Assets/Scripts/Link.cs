@@ -32,6 +32,8 @@ public class Link : MonoBehaviour {
     // Use this for initialization
     void Start() {
         animator = this.GetComponent<Animator>();
+
+        setColour();
     }
     
     // Update is called once per frame
@@ -58,6 +60,27 @@ public class Link : MonoBehaviour {
         }
 
         return source;
+    }
+    
+    private void setColour() {
+        Color colour;
+
+        switch (this.linkType) {
+        case LinkType.Red:
+            colour = Color.red;
+            break;
+        case LinkType.Green:
+            colour = Color.green;
+            break;
+        case LinkType.Blue:
+            colour = Color.blue;
+            break;
+        default:
+            colour = Color.white;
+            break;
+        }
+
+        renderer.material.SetColor("_Color", colour);
     }
 
     private void orient() {
