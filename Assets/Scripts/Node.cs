@@ -31,6 +31,8 @@ public class Node : MonoBehaviour {
     // There should only be one Node with this set to true.
     public bool IsStart = false;
 
+    public AudioClip[] sounds;
+
     // The local animator.
     private Animator animator;
 
@@ -116,8 +118,14 @@ public class Node : MonoBehaviour {
         }
     }
 
+    private void playSound() {
+        AudioClip sound = sounds[Random.Range(0, sounds.Length)];
+        audio.PlayOneShot(sound);
+    }
+
     private void movePlayerOn() {
         animator.Play("Player" + whichNode);
+        playSound();
     }
 
     private void movePlayerOff() {
