@@ -25,14 +25,23 @@ namespace GameController {
         }
         
         public void update() {
-            List<Link> links = Link.GetLinksFromNode(currentEnemy);
-            Link linkToTake = links[UnityEngine.Random.Range(0, links.Count)];
+            /* Pick a node away from the player. */
 
-            if (linkToTake.source == currentEnemy) {
-                linkToTake.target.moveEnemyOn();
-            } else {
-                linkToTake.source.moveEnemyOn();
-            }
+            // Get all nodes
+            List<Node> nodes = Node.GetConnectedNodes(currentEnemy);
+
+            // Sort by distance from player
+            nodes.Sort(delegate(Node a, Node b) {
+                return a.distanceTo(b);
+            });
+
+            // Select furthest nodes
+            Node furthestNode = nodes[nodes.Count - 1];
+
+            // Go to the furthest node
+            furthestNode.moveEnemyOn();
+
+            Debug.Log("AI is now at node: " + furthestNode.name);
         }
 
         public void tearDown() {

@@ -66,6 +66,11 @@ public class Node : MonoBehaviour {
         }
     }
 
+    public int distanceTo(Node other) {
+        // TODO: Calculate distance between number of edges that must be travesed, not actual distance
+        return (int) Mathf.Round(Vector2.Distance(this.transform.position, other.transform.position));
+    }
+
     #region StaticHelpers
     public static List<Node> GetConnectedNodes(Node node) {
         List<Node> connectedNodes = new List<Node>();
@@ -75,11 +80,11 @@ public class Node : MonoBehaviour {
             Link link = links[i];
             
             if (link.source == node && link.target != node) {
-                connectedNodes.Add(link.source);
+                connectedNodes.Add(link.target);
             }
             
             if (link.source != node && link.target == node) {
-                connectedNodes.Add(link.target);
+                connectedNodes.Add(link.source);
             }
         }
         
