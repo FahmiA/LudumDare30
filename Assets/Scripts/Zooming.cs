@@ -4,7 +4,7 @@ using System.Collections;
 public class Zooming : MonoBehaviour {
 
     public int MinZoomDistance = 3;
-    public int MaxZoomDistance = 11;
+    public int MaxZoomDistance = 12;
 
     // Amount to zoom per scroll in hundredths of a size unit.
     public int ZoomSpeed = 100;
