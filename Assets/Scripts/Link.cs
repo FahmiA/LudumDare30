@@ -13,7 +13,7 @@ public class Link : MonoBehaviour {
     }
 
     // The magic scale number to stretch a link by.
-    public const float MAGIC_SCALE = 3.5f;
+    public const float MAGIC_SCALE = 3.4f;
 
     // Note that the order of these is arbitrary.
     public Node source;
