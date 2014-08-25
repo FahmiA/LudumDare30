@@ -15,7 +15,10 @@ public class CameraTint : MonoBehaviour {
     }
 
     public void Update() {
+        updateTintSize();
+
         if (this.postTint != null && Time.time - tintedAt > 1.3f) {
+
             PostTint postTint = this.postTint;
             this.postTint = null;
             postTint();
@@ -25,7 +28,7 @@ public class CameraTint : MonoBehaviour {
     public void Show(Link link) {
         Color colour = link.getColour();
         renderer.material.SetColor("_Color", colour);
-        
+
         animator.Play("FadeIn");
     }
 
@@ -34,6 +37,18 @@ public class CameraTint : MonoBehaviour {
 
         this.postTint = postTint;
         tintedAt = Time.time;
+    }
+
+    private void updateTintSize() {
+        // Get the camera extent
+        float vertExtent = Camera.main.orthographicSize;
+        float horzExtent = vertExtent * Screen.width / Screen.height;
+        float tintSpriteSize = 10.0f;
+
+        // Update the tint's scale to fit the camera (and no bigger)
+        transform.localScale = new Vector3((horzExtent * 1000.0f) / tintSpriteSize,
+                                           (vertExtent * 1000.0f) / tintSpriteSize,
+                                           transform.localScale.z);
     }
 
 }

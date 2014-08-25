@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5adbda2562c4ee79e55669412693d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinZoomDistance: 3
+  MinZoomDistance: 8
   MaxZoomDistance: 12
   ZoomSpeed: 100
 --- !u!114 &36642985
@@ -11326,7 +11326,7 @@ SpriteRenderer:
   m_SortingLayerID: 2451094029
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 896c4d2702c006a47b54339802e0153a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: .279411793, g: .172577873, b: .172577873, a: 1}
 --- !u!95 &1300692586
 Animator:
   serializedVersion: 3
