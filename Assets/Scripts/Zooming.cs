@@ -8,6 +8,14 @@ public class Zooming : MonoBehaviour {
 
     // Amount to zoom per scroll in hundredths of a size unit.
     public int ZoomSpeed = 100;
+
+    // Initial camera zoom size
+    public int initialSize = 5;
+
+    void Start() {
+        // Reset the camera zoom when the scene starts or restarts
+        Camera.main.orthographicSize = initialSize;
+    }
     
     void Update() {
         if (!PanTo.IsPanning) {
