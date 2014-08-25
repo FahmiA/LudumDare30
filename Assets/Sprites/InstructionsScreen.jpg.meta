@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4391cb8f3f8ce5946b666f3d04be225f
+guid: e0b784aab6e6a69409925302abedb399
 TextureImporter:
   fileIDToRecycleName:
     21300000: InstructionsScreen
@@ -25,10 +25,10 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 1024
   textureSettings:
-    filterMode: 2
-    aniso: 1
+    filterMode: -1
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapMode: -1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
