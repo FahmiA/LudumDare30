@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cad507d6483ab342a0ff4294443a451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDelay: 1
+  startDelay: .5
   playerStartNode: {fileID: 1125973454}
   enemyStartNode: {fileID: 1224908475}
 --- !u!4 &157846374

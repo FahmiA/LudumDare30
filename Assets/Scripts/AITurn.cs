@@ -10,6 +10,8 @@ public class AITurn : GameTurn {
     private bool isWaiting = false;
     private bool handicap = true;
 
+    private float wait;
+
     private TurnBasedGameController director;
 
     public AITurn(TurnBasedGameController director, Node startNode) {
@@ -20,10 +22,11 @@ public class AITurn : GameTurn {
     public void Setup() {
         Node.Disable();
         turnsLeft = handicap ? 4 : 2;
+        wait = Time.time;
     }
 
     public void Update() {
-        if (isWaiting) {
+        if (isWaiting || Time.time < wait + 1) {
             return;
         }
 
