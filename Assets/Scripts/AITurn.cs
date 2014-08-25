@@ -85,8 +85,10 @@ public class AITurn : GameTurn {
         if (!handicap && turnsLeft == 2) {
             if (playerNode.transform.parent != move.transform.parent) {
                 if (panTurn) {
+                    GameObject landmark =
+                        move.transform.parent.gameObject.GetComponent<Landmark>().asset;
                     GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PanTo>()
-                        .MoveTo(move.transform.parent.gameObject, delegate(PanTo.EndPan end) {
+                        .MoveTo(landmark, delegate(PanTo.EndPan end) {
                         tint.Show(far, delegate () {
                             end(delegate () {
                                 turnsLeft -= 1;

@@ -51,11 +51,11 @@ public class PanTo : MonoBehaviour {
         }
     }
 
-    public void MoveTo(GameObject landscape, OnPan onPan) {
+    public void MoveTo(GameObject landmark, OnPan onPan) {
         IsPanning = true;
         isPanningBack = false;
         panningFrom = transform.position;
-        panningTo = landscape.transform.position;
+        panningTo = landmark.transform.position;
         sizeFrom = camera.orthographicSize;
         sizeTo = 5;
         this.onPan = onPan;
